@@ -62,13 +62,14 @@ function Chat() {
   }, []);
 
   useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-      document.documentElement.classList.remove("light");
-    } else {
-      document.documentElement.classList.remove("dark");
-      document.documentElement.classList.add("light");
-    }
+    // if (theme === "dark") {
+    //   document.documentElement.classList.add("dark");
+    //   document.documentElement.classList.remove("light");
+    // }
+    // else {
+    document.documentElement.classList.remove("dark");
+    document.documentElement.classList.add("light");
+    // }
 
     localStorage.setItem("theme", theme);
   }, [theme]);
@@ -540,7 +541,8 @@ function Chat() {
   );
 }
 
-const getBackendUrl = () => import.meta.env.VITE_PUBLIC_BACKEND_URL || "http://localhost:8787";
+const getBackendUrl = () =>
+  import.meta.env.VITE_PUBLIC_BACKEND_URL || "http://localhost:8787";
 
 const hasOpenAiKeyPromise = fetch(`${getBackendUrl()}/check-open-ai-key`)
   .then((res) => res.json())
