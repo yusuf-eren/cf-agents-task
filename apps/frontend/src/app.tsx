@@ -21,6 +21,7 @@ import { MemoizedMarkdown } from "./components/memoized-markdown";
 import { ToolInvocationCard } from "./components/tool-invocation-card/ToolInvocationCard";
 import { IntegrationsPanel } from "./components/integrations/IntegrationsPanel";
 import { SessionInfo } from "./components/session/SessionInfo";
+import config from "./config";
 
 // Icon imports
 import {
@@ -47,7 +48,7 @@ function Chat() {
   const [agentType, setAgentType] = useState<AgentType>(() => {
     // Check localStorage first, default to chat if not found
     const savedAgentType = localStorage.getItem("agentType");
-    return (savedAgentType as AgentType) || "auto-agent";
+    return (savedAgentType as AgentType) || "router-agent";
   });
   const [showDebug, setShowDebug] = useState(false);
   const [showIntegrations, setShowIntegrations] = useState(false);
@@ -110,7 +111,7 @@ function Chat() {
 
   const agent = useAgent({
     agent: agentType,
-    host: "http://localhost:8787",
+    host: config.BACKEND_URL,
   });
 
   // Handle agent connection events
@@ -308,7 +309,7 @@ function Chat() {
                     about:
                   </p>
                   <ul className="text-sm text-left space-y-2">
-                    {agentType === "auto-agent" ? (
+                    {agentType === "router-agent" ? (
                       <>
                         <li className="flex items-center gap-2">
                           <span className="text-[#F48120]">•</span>
@@ -539,7 +540,9 @@ function Chat() {
   );
 }
 
-const hasOpenAiKeyPromise = fetch("http://localhost:8787/check-open-ai-key")
+const getBackendUrl = () => import.meta.env.VITE_PUBLIC_BACKEND_URL || "http://localhost:8787";
+
+const hasOpenAiKeyPromise = fetch(`${getBackendUrl()}/check-open-ai-key`)
   .then((res) => res.json())
   .catch(() => ({ success: true }));
 

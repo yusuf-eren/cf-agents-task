@@ -3,7 +3,7 @@ import { pgTable, text, timestamp, uuid, jsonb } from "drizzle-orm/pg-core";
 // Messages table for storing chat messages
 export const messages = pgTable("messages", {
   id: uuid("id").defaultRandom().primaryKey(),
-  agentType: text("agent_type").notNull(), // 'auto-agent' or 'campaign-agent'
+  agentType: text("agent_type").notNull(), // 'router-agent' or 'campaign-agent'
   sessionId: text("session_id").notNull(),
   role: text("role").notNull(), // 'user', 'assistant', 'system'
   content: text("content").notNull(),
@@ -60,7 +60,7 @@ export const integrationConnections = pgTable("integration_connections", {
 // Prompts table for storing agent-specific system prompts
 export const prompts = pgTable("prompts", {
   id: uuid("id").defaultRandom().primaryKey(),
-  agentType: text("agent_type").notNull().unique(), // 'auto-agent', 'campaign-agent', etc.
+  agentType: text("agent_type").notNull().unique(), // 'router-agent', 'campaign-agent', etc.
   prompt: text("prompt").notNull(), // The system prompt content
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()

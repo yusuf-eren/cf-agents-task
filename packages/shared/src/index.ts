@@ -5,12 +5,12 @@ export const APPROVAL = {
 } as const;
 
 // Agent types
-export type AgentType = "auto-agent" | "campaign-agent";
+export type AgentType = "router-agent" | "campaign-agent";
 
 // Agent display names
 export const getAgentDisplayName = (type: AgentType): string => {
   switch (type) {
-    case "auto-agent":
+    case "router-agent":
       return "Auto Agent";
     case "campaign-agent":
       return "Campaign Agent";
@@ -34,5 +34,5 @@ export type ConnectionStatus =
 
 // Common utility functions
 export const normalizeAgentType = (displayName: string): AgentType => {
-  return displayName === "Auto Agent" ? "auto-agent" : "campaign-agent";
+  return displayName === "Auto Agent" ? "router-agent" : "campaign-agent";
 };

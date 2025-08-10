@@ -29,7 +29,7 @@ export function useSession() {
    * Get agent-specific session ID
    */
   const getAgentSession = (
-    agentType: "auto-agent" | "campaign-agent" | "gateway"
+    agentType: "router-agent" | "campaign-agent" | "gateway"
   ) => {
     return getAgentSessionId(agentType);
   };

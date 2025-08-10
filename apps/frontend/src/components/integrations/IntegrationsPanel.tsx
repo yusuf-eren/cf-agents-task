@@ -6,6 +6,7 @@ import { Tooltip } from "../tooltip/Tooltip";
 import { Plugs, Check, X, Warning } from "@phosphor-icons/react";
 import { TooltipProvider } from "@/providers/TooltipProvider";
 import { getAgentSessionId } from "@/lib/sessionManager";
+import config from "../../config";
 
 interface Integration {
   id: string;
@@ -21,7 +22,7 @@ interface Integration {
 }
 
 interface IntegrationsPanelProps {
-  agentType: "auto-agent" | "campaign-agent" | "gateway";
+  agentType: "router-agent" | "campaign-agent" | "gateway";
 }
 
 export function IntegrationsPanel({ agentType }: IntegrationsPanelProps) {
@@ -53,7 +54,7 @@ export function IntegrationsPanel({ agentType }: IntegrationsPanelProps) {
     try {
       setLoading(true);
       const response = await fetch(
-        `http://localhost:8787/api/integrations?sessionId=${sessionId}`
+        `${config.BACKEND_URL}/api/integrations?sessionId=${sessionId}`
       );
       if (!response.ok) throw new Error("Failed to fetch integrations");
 
@@ -72,7 +73,7 @@ export function IntegrationsPanel({ agentType }: IntegrationsPanelProps) {
     try {
       setConnectingIntegration(integrationId);
       const response = await fetch(
-        `http://localhost:8787/api/integrations/${integrationId}?sessionId=${sessionId}`,
+        `${config.BACKEND_URL}/api/integrations/${integrationId}?sessionId=${sessionId}`,
         {
           method: "POST",
         }
@@ -97,7 +98,7 @@ export function IntegrationsPanel({ agentType }: IntegrationsPanelProps) {
     try {
       setConnectingIntegration(integrationId);
       const response = await fetch(
-        `http://localhost:8787/api/integrations/${integrationId}?sessionId=${sessionId}`,
+        `${config.BACKEND_URL}/api/integrations/${integrationId}?sessionId=${sessionId}`,
         {
           method: "DELETE",
         }
@@ -119,7 +120,7 @@ export function IntegrationsPanel({ agentType }: IntegrationsPanelProps) {
   // Filter integrations based on agent type
   const getAvailableIntegrations = () => {
     const agentMappings: Record<string, string[]> = {
-      "auto-agent": ["shopify", "posthog"],
+      "router-agent": ["shopify", "posthog"],
       "campaign-agent": ["google-ads", "shopify", "posthog"],
       gateway: [],
     };

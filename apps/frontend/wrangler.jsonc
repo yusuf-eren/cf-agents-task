@@ -1,0 +1,36 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "cf-agents-frontend",
+  "compatibility_date": "2025-03-14",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "./dist/",
+    "not_found_handling": "single-page-application",
+    "html_handling": "force-trailing-slash"
+  },
+  "env": {
+    "local": {
+      "name": "cf-agents-frontend-local",
+      "vars": {
+        "VITE_PUBLIC_BACKEND_URL": "http://localhost:8787",
+        "VITE_PUBLIC_APP_URL": "http://localhost:3000"
+      }
+    },
+    "staging": {
+      "name": "cf-agents-frontend-staging",
+      "vars": {
+        "VITE_PUBLIC_BACKEND_URL": "https://cf-agents-backend.erenyusuf170.workers.dev",
+        "VITE_PUBLIC_APP_URL": "https://cf-agents-frontend-staging.pages.dev"
+      }
+    },
+    "production": {
+      "name": "cf-agents-frontend-production", 
+      "vars": {
+        "VITE_PUBLIC_BACKEND_URL": "https://cf-agents-backend.erenyusuf170.workers.dev",
+        "VITE_PUBLIC_APP_URL": "https://cf-agents-frontend.pages.dev"
+      }
+    }
+  }
+}

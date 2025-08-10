@@ -62,7 +62,7 @@ export function getSessionInfo() {
  * This ensures integrations and conversation history use the same session ID
  */
 export function getAgentSessionId(
-  agentType: "auto-agent" | "campaign-agent" | "gateway"
+  agentType: "router-agent" | "campaign-agent" | "gateway"
 ): string {
   // Use fixed session IDs that match backend expectations
   // This ensures integrations connected for an agent work across all sessions

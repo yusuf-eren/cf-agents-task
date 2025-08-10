@@ -37,7 +37,7 @@ export class RouterAgent extends AIChatAgent<Env> {
     console.log(`RouterAgent connected: ${connection.id}`);
 
     // Use a persistent session ID that matches frontend format
-    // Frontend creates IDs like: auto-agent-{suffix} where suffix is from main session
+    // Frontend creates IDs like: router-agent-{suffix} where suffix is from main session
     // We'll use a fixed suffix to ensure consistency across connections
     this.sessionId = `router-agent-persistent`;
 
@@ -46,7 +46,7 @@ export class RouterAgent extends AIChatAgent<Env> {
       try {
         const session = await this.dbOps.createSession({
           id: this.sessionId,
-          agentType: "auto-agent",
+          agentType: "router-agent",
           agentName: this.sessionId,
           metadata: {
             startedAt: new Date(),
@@ -149,13 +149,18 @@ export class RouterAgent extends AIChatAgent<Env> {
     // Save all messages to database before closing
     if (this.dbOps && this.sessionId && this.messages.length > 0) {
       try {
-        console.log(`RouterAgent: Saving ${this.messages.length} messages to database on close`);
+        console.log(
+          `RouterAgent: Saving ${this.messages.length} messages to database on close`
+        );
         for (const message of this.messages) {
           await this.dbOps.saveMessage({
-            agentType: "auto-agent",
+            agentType: "router-agent",
             sessionId: this.sessionId,
             role: message.role as "user" | "assistant" | "system",
-            content: typeof message.content === 'string' ? message.content : JSON.stringify(message.content),
+            content:
+              typeof message.content === "string"
+                ? message.content
+                : JSON.stringify(message.content),
             metadata: {
               timestamp: new Date().toISOString(),
               agentName: "RouterAgent",
@@ -184,10 +189,15 @@ export class RouterAgent extends AIChatAgent<Env> {
   ): Promise<Response> {
     // Save user message before processing - only if message count > 10
     const userMessage = this.messages[this.messages.length - 1];
-    if (this.dbOps && this.sessionId && userMessage?.role === "user" && this.messages.length > 10) {
+    if (
+      this.dbOps &&
+      this.sessionId &&
+      userMessage?.role === "user" &&
+      this.messages.length > 10
+    ) {
       try {
         const savedMessage = await this.dbOps.saveMessage({
-          agentType: "auto-agent",
+          agentType: "router-agent",
           sessionId: this.sessionId,
           role: "user",
           content: userMessage.content as string,
@@ -214,7 +224,7 @@ export class RouterAgent extends AIChatAgent<Env> {
 
           // Get tools for this agent based on connected integrations
           const tools = await getToolsForAgent(
-            "auto-agent",
+            "router-agent",
             this.sessionId,
             this.dbOps
           );
@@ -233,7 +243,7 @@ export class RouterAgent extends AIChatAgent<Env> {
               if (this.dbOps && this.sessionId && this.messages.length > 10) {
                 try {
                   const savedResponse = await this.dbOps.saveMessage({
-                    agentType: "auto-agent",
+                    agentType: "router-agent",
                     sessionId: this.sessionId,
                     role: "assistant",
                     content: result.text,
@@ -275,7 +285,7 @@ export class RouterAgent extends AIChatAgent<Env> {
           if (this.dbOps && this.sessionId && this.messages.length > 10) {
             try {
               await this.dbOps.saveMessage({
-                agentType: "auto-agent",
+                agentType: "router-agent",
                 sessionId: this.sessionId,
                 role: "system",
                 content: `Error processing message: ${error instanceof Error ? error.message : "Unknown error"}`,
@@ -346,7 +356,7 @@ export class RouterAgent extends AIChatAgent<Env> {
       await this.dbOps.connectIntegration(this.sessionId, integrationName, {
         connectedAt: new Date().toISOString(),
         source: "agent",
-        agentType: "auto-agent",
+        agentType: "router-agent",
       });
       console.log(`RouterAgent connected integration: ${integrationName}`);
       return true;
@@ -514,13 +524,18 @@ export class CampaignAgent extends AIChatAgent<Env> {
     // Save all messages to database before closing
     if (this.dbOps && this.sessionId && this.messages.length > 0) {
       try {
-        console.log(`CampaignAgent: Saving ${this.messages.length} messages to database on close`);
+        console.log(
+          `CampaignAgent: Saving ${this.messages.length} messages to database on close`
+        );
         for (const message of this.messages) {
           await this.dbOps.saveMessage({
             agentType: "campaign-agent",
             sessionId: this.sessionId,
             role: message.role as "user" | "assistant" | "system",
-            content: typeof message.content === 'string' ? message.content : JSON.stringify(message.content),
+            content:
+              typeof message.content === "string"
+                ? message.content
+                : JSON.stringify(message.content),
             metadata: {
               timestamp: new Date().toISOString(),
               agentName: "CampaignAgent",
@@ -530,7 +545,10 @@ export class CampaignAgent extends AIChatAgent<Env> {
         }
         console.log(`CampaignAgent: Successfully saved all messages on close`);
       } catch (error) {
-        console.error("CampaignAgent: Failed to save messages on close:", error);
+        console.error(
+          "CampaignAgent: Failed to save messages on close:",
+          error
+        );
       }
     }
 
@@ -549,7 +567,12 @@ export class CampaignAgent extends AIChatAgent<Env> {
   ): Promise<Response> {
     // Save user message before processing - only if message count > 10
     const userMessage = this.messages[this.messages.length - 1];
-    if (this.dbOps && this.sessionId && userMessage?.role === "user" && this.messages.length > 10) {
+    if (
+      this.dbOps &&
+      this.sessionId &&
+      userMessage?.role === "user" &&
+      this.messages.length > 10
+    ) {
       try {
         const savedMessage = await this.dbOps.saveMessage({
           agentType: "campaign-agent",

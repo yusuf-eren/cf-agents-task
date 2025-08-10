@@ -73,7 +73,7 @@ export const getAllTools = () => {
 
 // Agent tool mappings
 export const agentToolMappings = {
-  "auto-agent": ["shopify", "posthog"],
+  "router-agent": ["shopify", "posthog"],
   "campaign-agent": ["google-ads", "shopify", "posthog"],
 } as const;
 

@@ -7,7 +7,13 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
+    "build:staging": "VITE_PUBLIC_BACKEND_URL=https://cf-agents-backend.erenyusuf170.workers.dev VITE_PUBLIC_APP_URL=https://cf-agents-frontend-staging.pages.dev vite build",
+    "build:production": "VITE_PUBLIC_BACKEND_URL=https://cf-agents-backend.erenyusuf170.workers.dev VITE_PUBLIC_APP_URL=https://cf-agents-frontend.pages.dev vite build",
     "preview": "vite preview",
+    "deploy": "npm run build && wrangler deploy",
+    "deploy:staging": "npm run build:staging && wrangler deploy --env staging",
+    "deploy:production": "npm run build:production && wrangler deploy --env production",
+    "deploy:prod": "npm run deploy:production",
     "lint": "echo 'Linting disabled'",
     "format": "prettier --write ."
   },
@@ -31,6 +37,7 @@
     "@radix-ui/react-dropdown-menu": "^2.1.15",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-switch": "^1.2.5",
+
     "agents": "^0.0.111",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
