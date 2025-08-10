@@ -105,8 +105,6 @@ export const getToolsByIntegration = (integrationName: IntegrationName) => {
 
 // Helper function to convert our tool format to AI SDK format
 const convertToolsToAISDKFormat = (tools: Record<string, any>) => {
-  console.log("---tuls", tools);
-  // Tools are already in the correct format after restructuring
   return tools;
 };
 
@@ -161,20 +159,9 @@ export const getToolsForAgent = async (
     if (isConnected) {
       const tools = getToolsByIntegration(integrationName as IntegrationName);
       Object.assign(agentTools, tools);
-      console.log(
-        `✅ Added ${Object.keys(tools).length} tools from ${integrationName} integration`
-      );
-    } else {
-      console.log(
-        `❌ Skipping ${integrationName} - not connected for session ${sessionId}`
-      );
     }
   }
 
-  console.log(
-    `🔧 Total tools available for ${agentType}:`,
-    Object.keys(agentTools)
-  );
   return convertToolsToAISDKFormat(agentTools);
 };
 

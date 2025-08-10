@@ -229,9 +229,6 @@ export class RouterAgent extends AIChatAgent<Env> {
             this.dbOps
           );
 
-          // Debug: Log available tools
-          console.log("RouterAgent available tools:", Object.keys(tools));
-
           // Stream the AI response
           const result = streamText({
             model: openai("gpt-4o"),
@@ -606,9 +603,6 @@ export class CampaignAgent extends AIChatAgent<Env> {
             this.sessionId,
             this.dbOps
           );
-
-          // Debug: Log available tools
-          console.log("CampaignAgent available tools:", Object.keys(tools));
 
           // Stream the AI response
           const result = streamText({
