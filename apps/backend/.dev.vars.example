@@ -1,0 +1,3 @@
+OPENAI_API_KEY=your_openai_api_key_here
+GATEWAY_BASE_URL=https://gateway.ai.cloudflare.com/v1/your-account-id/your-gateway-id/openai
+DATABASE_URL=postgresql://postgres:[password]@[host]:[port]/[database]
