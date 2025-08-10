@@ -146,6 +146,29 @@ export class RouterAgent extends AIChatAgent<Env> {
   async onClose(connection: Connection): Promise<void> {
     console.log(`RouterAgent disconnected: ${connection.id}`);
 
+    // Save all messages to database before closing
+    if (this.dbOps && this.sessionId && this.messages.length > 0) {
+      try {
+        console.log(`RouterAgent: Saving ${this.messages.length} messages to database on close`);
+        for (const message of this.messages) {
+          await this.dbOps.saveMessage({
+            agentType: "auto-agent",
+            sessionId: this.sessionId,
+            role: message.role as "user" | "assistant" | "system",
+            content: typeof message.content === 'string' ? message.content : JSON.stringify(message.content),
+            metadata: {
+              timestamp: new Date().toISOString(),
+              agentName: "RouterAgent",
+              savedOnClose: true,
+            },
+          });
+        }
+        console.log(`RouterAgent: Successfully saved all messages on close`);
+      } catch (error) {
+        console.error("RouterAgent: Failed to save messages on close:", error);
+      }
+    }
+
     if (this.dbManager) {
       try {
         await this.dbManager.close();
@@ -159,9 +182,9 @@ export class RouterAgent extends AIChatAgent<Env> {
     onFinish: any,
     options?: { abortSignal?: AbortSignal }
   ): Promise<Response> {
-    // Save user message before processing
+    // Save user message before processing - only if message count > 10
     const userMessage = this.messages[this.messages.length - 1];
-    if (this.dbOps && this.sessionId && userMessage?.role === "user") {
+    if (this.dbOps && this.sessionId && userMessage?.role === "user" && this.messages.length > 10) {
       try {
         const savedMessage = await this.dbOps.saveMessage({
           agentType: "auto-agent",
@@ -206,8 +229,8 @@ export class RouterAgent extends AIChatAgent<Env> {
             messages: this.messages,
             tools,
             onFinish: async (result) => {
-              // Save assistant response after completion
-              if (this.dbOps && this.sessionId) {
+              // Save assistant response after completion - only if message count > 10
+              if (this.dbOps && this.sessionId && this.messages.length > 10) {
                 try {
                   const savedResponse = await this.dbOps.saveMessage({
                     agentType: "auto-agent",
@@ -248,8 +271,8 @@ export class RouterAgent extends AIChatAgent<Env> {
           result.mergeIntoDataStream(dataStream);
         } catch (error) {
           console.error("Error in RouterAgent onChatMessage:", error);
-          // Save error message to database
-          if (this.dbOps && this.sessionId) {
+          // Save error message to database - only if message count > 10
+          if (this.dbOps && this.sessionId && this.messages.length > 10) {
             try {
               await this.dbOps.saveMessage({
                 agentType: "auto-agent",
@@ -488,6 +511,29 @@ export class CampaignAgent extends AIChatAgent<Env> {
   async onClose(connection: Connection): Promise<void> {
     console.log(`CampaignAgent disconnected: ${connection.id}`);
 
+    // Save all messages to database before closing
+    if (this.dbOps && this.sessionId && this.messages.length > 0) {
+      try {
+        console.log(`CampaignAgent: Saving ${this.messages.length} messages to database on close`);
+        for (const message of this.messages) {
+          await this.dbOps.saveMessage({
+            agentType: "campaign-agent",
+            sessionId: this.sessionId,
+            role: message.role as "user" | "assistant" | "system",
+            content: typeof message.content === 'string' ? message.content : JSON.stringify(message.content),
+            metadata: {
+              timestamp: new Date().toISOString(),
+              agentName: "CampaignAgent",
+              savedOnClose: true,
+            },
+          });
+        }
+        console.log(`CampaignAgent: Successfully saved all messages on close`);
+      } catch (error) {
+        console.error("CampaignAgent: Failed to save messages on close:", error);
+      }
+    }
+
     if (this.dbManager) {
       try {
         await this.dbManager.close();
@@ -501,9 +547,9 @@ export class CampaignAgent extends AIChatAgent<Env> {
     onFinish: any,
     options?: { abortSignal?: AbortSignal }
   ): Promise<Response> {
-    // Save user message before processing
+    // Save user message before processing - only if message count > 10
     const userMessage = this.messages[this.messages.length - 1];
-    if (this.dbOps && this.sessionId && userMessage?.role === "user") {
+    if (this.dbOps && this.sessionId && userMessage?.role === "user" && this.messages.length > 10) {
       try {
         const savedMessage = await this.dbOps.saveMessage({
           agentType: "campaign-agent",
@@ -548,8 +594,8 @@ export class CampaignAgent extends AIChatAgent<Env> {
             messages: this.messages,
             tools,
             onFinish: async (result) => {
-              // Save assistant response after completion
-              if (this.dbOps && this.sessionId) {
+              // Save assistant response after completion - only if message count > 10
+              if (this.dbOps && this.sessionId && this.messages.length > 10) {
                 try {
                   const savedResponse = await this.dbOps.saveMessage({
                     agentType: "campaign-agent",
@@ -590,8 +636,8 @@ export class CampaignAgent extends AIChatAgent<Env> {
           result.mergeIntoDataStream(dataStream);
         } catch (error) {
           console.error("Error in CampaignAgent onChatMessage:", error);
-          // Save error message to database
-          if (this.dbOps && this.sessionId) {
+          // Save error message to database - only if message count > 10
+          if (this.dbOps && this.sessionId && this.messages.length > 10) {
             try {
               await this.dbOps.saveMessage({
                 agentType: "campaign-agent",
