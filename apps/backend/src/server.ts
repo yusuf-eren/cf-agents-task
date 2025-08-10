@@ -76,7 +76,10 @@ export class RouterAgent extends AIChatAgent<Env> {
 
     try {
       // Get previous messages for this agent type
-      const savedMessages = await this.dbOps.getAgentMessages("router-agent", 50);
+      const savedMessages = await this.dbOps.getAgentMessages(
+        "router-agent",
+        50
+      );
 
       if (savedMessages.length > 0) {
         console.log(
@@ -119,7 +122,8 @@ export class RouterAgent extends AIChatAgent<Env> {
 
     try {
       // Get system prompt for this agent type from database
-      const promptRecord = await this.dbOps.getPromptByAgentType("router-agent");
+      const promptRecord =
+        await this.dbOps.getPromptByAgentType("router-agent");
 
       if (promptRecord && promptRecord.prompt) {
         this.systemPrompt = promptRecord.prompt;
@@ -219,7 +223,7 @@ export class RouterAgent extends AIChatAgent<Env> {
                     },
                   });
                   console.log(
-                    `AutoAgent assistant response saved: ${savedResponse?.id}`
+                    `RouterAgent assistant response saved: ${savedResponse?.id}`
                   );
 
                   // Update session metadata
@@ -305,7 +309,7 @@ export class RouterAgent extends AIChatAgent<Env> {
     try {
       await this.dbOps.updateToolExecution(executionId, output, status);
       console.log(
-        `AutoAgent tool execution completed: ${executionId} with status: ${status}`
+        `RouterAgent tool execution completed: ${executionId} with status: ${status}`
       );
     } catch (error) {
       console.error("Failed to log tool completion:", error);
@@ -689,7 +693,7 @@ export interface Env {
   OPENAI_API_KEY: string;
   GATEWAY_BASE_URL: string;
   HYPERDRIVE: Hyperdrive;
-  AutoAgent: DurableObjectNamespace;
+  RouterAgent: DurableObjectNamespace;
   CampaignAgent: DurableObjectNamespace;
 }
 
@@ -731,7 +735,7 @@ export default {
 
         if (url.pathname === "/api/integrations" && request.method === "GET") {
           // Get all available integrations with status
-          let integrationList = Object.entries(integrations).map(
+          let integrationList: any = Object.entries(integrations).map(
             ([key, integration]) => ({
               id: key, // Use key as id for filtering
               name: integration.name, // Display name
@@ -959,12 +963,12 @@ export default {
       }
     }
 
-    // Route to specific agents, AutoAgent will be the default when no specific agent is requested
+    // Route to specific agents, RouterAgent will be the default when no specific agent is requested
     return (
       (await routeAgentRequest(
         request,
         {
-          AutoAgent: env.AutoAgent,
+          RouterAgent: env.RouterAgent,
           CampaignAgent: env.CampaignAgent,
         },
         { cors: true }

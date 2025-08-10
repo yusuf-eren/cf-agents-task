@@ -89,27 +89,30 @@ export const getToolsByIntegration = (integrationName: IntegrationName) => {
   integration.tools.forEach((toolName) => {
     // Find the tool that has this name
     for (const [, tool] of Object.entries(allTools)) {
-      if (tool && typeof tool === 'object' && tool.name === toolName) {
+      if (tool && typeof tool === "object" && tool.name === toolName) {
         integrationTools[toolName] = tool;
         break;
       }
     }
   });
 
-  console.log(`🔧 Found ${Object.keys(integrationTools).length} tools for ${integrationName}:`, Object.keys(integrationTools));
+  console.log(
+    `🔧 Found ${Object.keys(integrationTools).length} tools for ${integrationName}:`,
+    Object.keys(integrationTools)
+  );
   return integrationTools;
 };
 
 // Helper function to convert our tool format to AI SDK format
 const convertToolsToAISDKFormat = (tools: Record<string, any>) => {
-  console.log('---tuls', tools)
+  console.log("---tuls", tools);
   // Tools are already in the correct format after restructuring
   return tools;
 };
 
 // Helper function to get tools for a specific agent with session-based filtering
 export const getToolsForAgent = async (
-  agentType: keyof typeof agentToolMappings, 
+  agentType: keyof typeof agentToolMappings,
   sessionId?: string,
   dbOps?: any
 ) => {
@@ -119,26 +122,36 @@ export const getToolsForAgent = async (
   for (const integrationName of integrationNames) {
     // Check if this integration is actually connected for the session
     let isConnected = false;
-    
+
     if (sessionId && dbOps) {
       try {
-        const sessionIntegrations = await dbOps.getSessionIntegrations(sessionId);
-        console.log(`🔍 Checking integrations for session ${sessionId}:`, 
-          sessionIntegrations.map((conn: any) => `${conn.integrationName}:${conn.status}`));
-        
+        const sessionIntegrations =
+          await dbOps.getSessionIntegrations(sessionId);
+        console.log(
+          `🔍 Checking integrations for session ${sessionId}:`,
+          sessionIntegrations.map(
+            (conn: any) => `${conn.integrationName}:${conn.status}`
+          )
+        );
+
         isConnected = sessionIntegrations.some(
-          (conn: any) => 
-            conn.integrationName === integrationName && 
+          (conn: any) =>
+            conn.integrationName === integrationName &&
             conn.status === "connected"
         );
       } catch (error) {
-        console.warn(`Failed to check integration status for ${integrationName}:`, error);
+        console.warn(
+          `Failed to check integration status for ${integrationName}:`,
+          error
+        );
         // Default to connected for development
         isConnected = true;
       }
     } else {
       // Default to connected if no session/db context
-      console.log(`⚠️  No sessionId or dbOps provided, defaulting to connected`);
+      console.log(
+        `⚠️  No sessionId or dbOps provided, defaulting to connected`
+      );
       isConnected = true;
     }
 
@@ -148,13 +161,20 @@ export const getToolsForAgent = async (
     if (isConnected) {
       const tools = getToolsByIntegration(integrationName as IntegrationName);
       Object.assign(agentTools, tools);
-      console.log(`✅ Added ${Object.keys(tools).length} tools from ${integrationName} integration`);
+      console.log(
+        `✅ Added ${Object.keys(tools).length} tools from ${integrationName} integration`
+      );
     } else {
-      console.log(`❌ Skipping ${integrationName} - not connected for session ${sessionId}`);
+      console.log(
+        `❌ Skipping ${integrationName} - not connected for session ${sessionId}`
+      );
     }
   }
 
-  console.log(`🔧 Total tools available for ${agentType}:`, Object.keys(agentTools));
+  console.log(
+    `🔧 Total tools available for ${agentType}:`,
+    Object.keys(agentTools)
+  );
   return convertToolsToAISDKFormat(agentTools);
 };
 

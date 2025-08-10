@@ -20,16 +20,19 @@ cf-agents-workspace/
 ## Features
 
 ### 🤖 **Dual Agent System**
+
 - **Auto Agent**: General-purpose assistant with weather, time, and scheduling capabilities
 - **Campaign Agent**: Specialized for marketing campaigns, strategy development, and automation
 
 ### 🌐 **Intelligent Gateway Routing**
+
 - Centralized request routing through Gateway
 - WebSocket connections directly to agents (bypassing Gateway for reliability)
 - Multiple routing strategies: URL patterns, headers, query parameters
 - Fallback mechanisms for robust operation
 
 ### 🔄 **Real-time Agent Switching**
+
 - Seamless switching between agent types in the UI
 - Persistent agent preferences
 - Connection status monitoring
@@ -38,6 +41,7 @@ cf-agents-workspace/
 ## Quick Start
 
 ### Prerequisites
+
 - Node.js 18+
 - npm or yarn
 - Cloudflare account (for deployment)
@@ -45,20 +49,23 @@ cf-agents-workspace/
 ### Development
 
 1. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 2. **Build shared packages**
+
    ```bash
    npm run build
    ```
 
 3. **Start development servers**
+
    ```bash
    # Start both frontend and backend
    npm run dev
-   
+
    # Or start individually
    npm run backend:dev
    npm run frontend:dev
@@ -73,6 +80,7 @@ cf-agents-workspace/
 ### Deployment
 
 1. **Deploy backend to Cloudflare**
+
    ```bash
    npm run backend:deploy
    ```
@@ -85,6 +93,7 @@ cf-agents-workspace/
 ## Available Scripts
 
 ### Root Level
+
 - `npm run dev` - Start all development servers
 - `npm run build` - Build all packages and apps
 - `npm run lint` - Lint all code
@@ -92,10 +101,12 @@ cf-agents-workspace/
 - `npm run format` - Format all code
 
 ### Backend Specific
+
 - `npm run backend:dev` - Start backend development server
 - `npm run backend:deploy` - Deploy backend to Cloudflare
 
 ### Frontend Specific
+
 - `npm run frontend:dev` - Start frontend development server
 - `npm run frontend:build` - Build frontend for production
 
@@ -104,6 +115,7 @@ cf-agents-workspace/
 ### Apps
 
 #### Backend (`apps/backend/`)
+
 - **Purpose**: Cloudflare Worker with AI agents and Gateway routing
 - **Technology**: Cloudflare Workers, Durable Objects, AI SDK
 - **Key Features**:
@@ -113,6 +125,7 @@ cf-agents-workspace/
   - Tool execution with human-in-the-loop
 
 #### Frontend (`apps/frontend/`)
+
 - **Purpose**: React web application for agent interaction
 - **Technology**: React 19, Vite, TailwindCSS
 - **Key Features**:
@@ -124,6 +137,7 @@ cf-agents-workspace/
 ### Packages
 
 #### Shared (`packages/shared/`)
+
 - **Purpose**: Common utilities, types, and constants
 - **Exports**:
   - Agent types and utilities
@@ -134,20 +148,23 @@ cf-agents-workspace/
 ## Agent Routing
 
 ### Request Flow
+
 ```
 Client Request → Main Worker → {
   ├── System endpoints (/check-open-ai-key) → Direct handling
-  ├── Gateway routes (/gateway/*, /api/gateway/*) → Gateway routing  
+  ├── Gateway routes (/gateway/*, /api/gateway/*) → Gateway routing
   ├── API endpoints (/api/*) → Direct API handling
   └── All other requests → Standard agent routing
 }
 ```
 
 ### Agent Types
+
 - **chat**: General-purpose agent for weather, time, scheduling
 - **campaign-agent**: Specialized for marketing and campaigns
 
 ### Routing Examples
+
 ```bash
 # Direct agent connections (WebSocket)
 /agents/chat/session-123
@@ -164,17 +181,20 @@ Client Request → Main Worker → {
 ## Development Tips
 
 ### Adding New Shared Utilities
+
 1. Add to `packages/shared/src/index.ts`
 2. Build the shared package: `npm run build --filter=@cf-agents/shared`
 3. Import in apps: `import { utility } from "@cf-agents/shared"`
 
 ### Creating New Agents
+
 1. Add agent class to `apps/backend/src/server.ts`
 2. Update wrangler.jsonc durable object bindings
 3. Add routing logic to Gateway
 4. Update frontend agent options
 
 ### Debugging
+
 - Use `npm run dev` to start both frontend and backend
 - Check browser console for frontend issues
 - Check Wrangler logs for backend issues

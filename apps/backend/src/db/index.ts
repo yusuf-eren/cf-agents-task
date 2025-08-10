@@ -1,6 +1,6 @@
-import { drizzle } from 'drizzle-orm/postgres-js';
-import postgres, { type Sql } from 'postgres';
-import * as schema from './schema';
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres, { type Sql } from "postgres";
+import * as schema from "./schema";
 
 const createDrizzle = (conn: Sql) => drizzle(conn, { schema });
 
@@ -31,7 +31,7 @@ export class DatabaseManager {
         max_lifetime: 0, // Never expire connections
       });
       this.db = createDrizzle(this.conn);
-      console.log('DatabaseManager: New connection established');
+      console.log("DatabaseManager: New connection established");
     }
     return { db: this.db, conn: this.conn };
   }
@@ -50,9 +50,9 @@ export class DatabaseManager {
     if (this.conn) {
       try {
         await this.conn.end();
-        console.log('DatabaseManager: Connection closed');
+        console.log("DatabaseManager: Connection closed");
       } catch (error) {
-        console.warn('DatabaseManager: Error closing connection:', error);
+        console.warn("DatabaseManager: Error closing connection:", error);
       } finally {
         this.db = null;
         this.conn = null;

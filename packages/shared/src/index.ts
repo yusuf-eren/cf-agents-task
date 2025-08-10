@@ -26,7 +26,11 @@ export const agentOptions = [
 ];
 
 // Connection status types
-export type ConnectionStatus = "connecting" | "connected" | "disconnected" | "error";
+export type ConnectionStatus =
+  | "connecting"
+  | "connected"
+  | "disconnected"
+  | "error";
 
 // Common utility functions
 export const normalizeAgentType = (displayName: string): AgentType => {

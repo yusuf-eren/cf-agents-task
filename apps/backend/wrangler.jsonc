@@ -10,8 +10,8 @@
   "durable_objects": {
     "bindings": [
       {
-        "name": "AutoAgent",
-        "class_name": "AutoAgent",
+        "name": "RouterAgent",
+        "class_name": "RouterAgent",
       },
       {
         "name": "CampaignAgent",
@@ -22,7 +22,7 @@
   "migrations": [
     {
       "tag": "v1",
-      "new_sqlite_classes": ["AutoAgent"],
+      "new_sqlite_classes": ["RouterAgent"],
     },
     {
       "tag": "v2",
@@ -36,7 +36,7 @@
     {
       "binding": "HYPERDRIVE",
       "localConnectionString": "postgresql://postgres:cloudflare-agent@db.nthrvvkxrxhcddkghziu.supabase.co:5432/postgres",
-      "id": "c8a1bd35d85f4dfeab75462ea1146657",
+      "id": "32c367f1dc1b4f30ac5ffa67e6515a74",
     },
   ],
   /**

@@ -12,7 +12,7 @@ declare module "cloudflare:test" {
   interface ProvidedEnv extends Env {}
 }
 
-describe("AutoAgent worker", () => {
+describe("RouterAgent worker", () => {
   it("responds with Not found", async () => {
     const request = new Request("http://example.com");
     // Create an empty context to pass to `worker.fetch()`

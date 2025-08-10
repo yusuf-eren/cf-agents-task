@@ -38,7 +38,9 @@ export function IntegrationsPanel({ agentType }: IntegrationsPanelProps) {
   useEffect(() => {
     const agentSessionId = getAgentSessionId(agentType);
     setSessionId(agentSessionId);
-    console.log(`IntegrationsPanel using session ID: ${agentSessionId} for agent: ${agentType}`);
+    console.log(
+      `IntegrationsPanel using session ID: ${agentSessionId} for agent: ${agentType}`
+    );
   }, [agentType]);
 
   useEffect(() => {
@@ -50,7 +52,9 @@ export function IntegrationsPanel({ agentType }: IntegrationsPanelProps) {
   const fetchIntegrations = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:8787/api/integrations?sessionId=${sessionId}`);
+      const response = await fetch(
+        `http://localhost:8787/api/integrations?sessionId=${sessionId}`
+      );
       if (!response.ok) throw new Error("Failed to fetch integrations");
 
       const data = await response.json();

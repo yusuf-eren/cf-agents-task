@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getSessionId, getSessionInfo, clearSession } from "@/lib/sessionManager";
+import { getSessionInfo, clearSession } from "@/lib/sessionManager";
 import { Button } from "../button/Button";
 import { Card } from "../card/Card";
 import { Copy, Trash } from "@phosphor-icons/react";
@@ -46,7 +46,7 @@ export function SessionInfo({ className }: SessionInfoProps) {
             <span className="text-muted-foreground">Session ID:</span>
             <div className="flex items-center gap-1">
               <code className="text-xs bg-muted px-1 rounded">
-                {sessionInfo.sessionId.split('-').pop()?.substring(0, 8)}...
+                {sessionInfo.sessionId.split("-").pop()?.substring(0, 8)}...
               </code>
               <Button
                 size="sm"
@@ -58,9 +58,7 @@ export function SessionInfo({ className }: SessionInfoProps) {
               </Button>
             </div>
           </div>
-          {copied && (
-            <div className="text-xs text-green-600">Copied!</div>
-          )}
+          {copied && <div className="text-xs text-green-600">Copied!</div>}
         </div>
         <div className="flex justify-end">
           <Button

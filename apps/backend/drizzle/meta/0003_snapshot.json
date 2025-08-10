@@ -176,9 +176,7 @@
         "prompts_agent_type_unique": {
           "name": "prompts_agent_type_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "agent_type"
-          ]
+          "columns": ["agent_type"]
         }
       },
       "policies": {},

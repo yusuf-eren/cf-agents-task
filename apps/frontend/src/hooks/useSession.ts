@@ -1,11 +1,15 @@
-import { useState, useEffect } from 'react';
-import { getSessionId, getAgentSessionId, getSessionInfo } from '@/lib/sessionManager';
+import { useState, useEffect } from "react";
+import {
+  getSessionId,
+  getAgentSessionId,
+  getSessionInfo,
+} from "@/lib/sessionManager";
 
 /**
  * Hook for managing user session across the application
  */
 export function useSession() {
-  const [sessionId, setSessionId] = useState<string>('');
+  const [sessionId, setSessionId] = useState<string>("");
   const [sessionInfo, setSessionInfo] = useState<{
     sessionId: string;
     created: string;
@@ -16,7 +20,7 @@ export function useSession() {
     // Get the main session ID
     const mainSessionId = getSessionId();
     const info = getSessionInfo();
-    
+
     setSessionId(mainSessionId);
     setSessionInfo(info);
   }, []);
@@ -24,7 +28,9 @@ export function useSession() {
   /**
    * Get agent-specific session ID
    */
-  const getAgentSession = (agentType: 'auto-agent' | 'campaign-agent' | 'gateway') => {
+  const getAgentSession = (
+    agentType: "auto-agent" | "campaign-agent" | "gateway"
+  ) => {
     return getAgentSessionId(agentType);
   };
 

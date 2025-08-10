@@ -3,8 +3,8 @@
  * Handles persistent user session ID across the entire application
  */
 
-const SESSION_KEY = 'user-session-id';
-const SESSION_PREFIX = 'user-session';
+const SESSION_KEY = "user-session-id";
+const SESSION_PREFIX = "user-session";
 
 /**
  * Generates a unique session ID
@@ -22,16 +22,16 @@ function generateSessionId(): string {
 export function getSessionId(): string {
   // Try to get existing session ID from localStorage
   let sessionId = localStorage.getItem(SESSION_KEY);
-  
+
   if (!sessionId) {
     // Generate new session ID if none exists
     sessionId = generateSessionId();
     localStorage.setItem(SESSION_KEY, sessionId);
-    console.log('Created new session ID:', sessionId);
+    console.log("Created new session ID:", sessionId);
   } else {
-    console.log('Using existing session ID:', sessionId);
+    console.log("Using existing session ID:", sessionId);
   }
-  
+
   return sessionId;
 }
 
@@ -40,7 +40,7 @@ export function getSessionId(): string {
  */
 export function clearSession(): void {
   localStorage.removeItem(SESSION_KEY);
-  console.log('Session cleared');
+  console.log("Session cleared");
 }
 
 /**
@@ -48,12 +48,12 @@ export function clearSession(): void {
  */
 export function getSessionInfo() {
   const sessionId = getSessionId();
-  const created = localStorage.getItem(`${SESSION_KEY}-created`) || 'unknown';
-  
+  const created = localStorage.getItem(`${SESSION_KEY}-created`) || "unknown";
+
   return {
     sessionId,
     created,
-    isNew: !localStorage.getItem(SESSION_KEY)
+    isNew: !localStorage.getItem(SESSION_KEY),
   };
 }
 
@@ -61,7 +61,9 @@ export function getSessionInfo() {
  * Creates agent-specific session IDs that are consistent across all connections
  * This ensures integrations and conversation history use the same session ID
  */
-export function getAgentSessionId(agentType: 'auto-agent' | 'campaign-agent' | 'gateway'): string {
+export function getAgentSessionId(
+  agentType: "auto-agent" | "campaign-agent" | "gateway"
+): string {
   // Use fixed session IDs that match backend expectations
   // This ensures integrations connected for an agent work across all sessions
   return `${agentType}-persistent`;
